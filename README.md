@@ -13,6 +13,7 @@ This project is a lightweight local agent setup that can:
 - `ai_news_report.md` — generated markdown report
 - `run_agent.bat` — Windows batch launcher
 - `multi_agent.py` — alternative multi-agent example file
+- `token_usage.jsonl` — local per-run token history (ignored by Git)
 
 ## How the flow works
 
@@ -48,6 +49,12 @@ Install dependencies if needed:
 .\.venv\Scripts\python -m pip install crewai langchain-community langchain-ollama ddgs
 ```
 
+For the QA workflow in `app_qa_agent.py`, install its additional dependencies:
+
+```powershell
+.\.venv\Scripts\python -m pip install langgraph pydantic ollama pytest
+```
+
 ## Run it
 
 ### Option 1: direct Python
@@ -60,6 +67,12 @@ Install dependencies if needed:
 
 ```powershell
 run_agent.bat
+```
+
+To run the QA workflow, use the project's virtual environment:
+
+```powershell
+.\.venv\Scripts\python app_qa_agent.py
 ```
 
 ## Expected behavior
@@ -82,6 +95,18 @@ Highlights:
   • The output is easy to read and suitable for quick review.
 ====================================================================
 ```
+
+After each agent run, the script prints the run's token count and totals
+recorded today and this month. Counts are appended to `token_usage.jsonl`;
+only runs after tracking is enabled are included. To view the totals without
+starting the agents, run either:
+
+```powershell
+.\.venv\Scripts\python agent.py --usage-today
+.\.venv\Scripts\python agent.py --usage-month
+```
+
+If the model/provider doesn't report token metrics, that run cannot be included.
 
 ## Notes
 
